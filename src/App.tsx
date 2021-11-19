@@ -21,7 +21,7 @@ function App() {
       const body = await res.json();
       setMessage(body.message);
       setDigipetStats(body.digipet);
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       setMessage(`${err.name}: ${err.message}`);
     }
@@ -41,7 +41,13 @@ function App() {
     <main>
       <h1>Digipet</h1>
       {isFirstLoad && <p>Loading...</p>}
-      {message && <p>{message}</p>}
+      {message && (
+        <p>
+          {message
+            .replace("with /digipet/hatch", "by clicking hatch")
+            .replace("with /hatch", "by clicking hatch")}
+        </p>
+      )}
       <hr />
       <DigipetData digipet={digipetStats} />
       <hr />
@@ -53,9 +59,25 @@ function App() {
           },
           {
             name: "Walk",
+
             handler: () => loadDataFromEndpoint("/digipet/walk"),
           },
-          { name: "Feed" },
+          {
+            name: "Feed",
+            handler: () => loadDataFromEndpoint("/digipet/feed"),
+          },
+          {
+            name: "Ignore",
+            handler: () => loadDataFromEndpoint("/digipet/ignore"),
+          },
+          {
+            name: "Train",
+            handler: () => loadDataFromEndpoint("/digipet/train"),
+          },
+          {
+            name: "Rehome",
+            handler: () => loadDataFromEndpoint("/digipet/rehome"),
+          },
         ]}
       />
     </main>
